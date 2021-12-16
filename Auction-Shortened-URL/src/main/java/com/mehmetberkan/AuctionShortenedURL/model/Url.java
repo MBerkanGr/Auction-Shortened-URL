@@ -13,6 +13,12 @@ public class Url {
 
     public Url() {}
 
+    public Url(String url, String shortenedUrl, int userId) {
+        this.url = url;
+        this.shortenedUrl = shortenedUrl;
+        this.userId = userId;
+    }
+
     public Url(int urlId, String url, String shortenedUrl, int userId) {
         this.urlId = urlId;
         this.url = url;

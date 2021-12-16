@@ -35,8 +35,9 @@ public class UrlImpl implements UrlService {
     }
 
     @Override
-    public String getOriginalUrl(int userId, String shortUrl) {
-        return urlRepository.findAllByShortenedUrlAndUserId(shortUrl,userId).getUrl();
+    public String getOriginalUrl(String shortUrl) {
+        Url url = urlRepository.findAllByShortenedUrl(shortUrl);
+        return url.getUrl();
     }
 
     @Override
@@ -69,8 +70,9 @@ public class UrlImpl implements UrlService {
         }
     }
 
-    private String builderUrl(int userId, String originalUrl){
-        String urlShort = "http://localhost:8080/"+userId+"/"+userId+originalUrl.hashCode();
+    private String builderUrl(int userId,String url){
+
+        String urlShort = String.valueOf(userId).hashCode()+""+ url.hashCode();
         return urlShort;
     }
 }

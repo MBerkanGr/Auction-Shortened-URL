@@ -9,7 +9,7 @@ public interface UrlService {
     List<Url> getAllUrls();
     Url getByUrlId(int urlId);
     List<Url> getAllByUserId(int userId);
-    String getOriginalUrl(int userId, String shortUrl);
+    String getOriginalUrl(String shortUrl);
     String getShortenedUrl(int userId, String originalUrl);
     Url createUrl(int userId, String url);
     String deleteUrl(int urlId);
