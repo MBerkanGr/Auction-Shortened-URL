@@ -26,7 +26,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/add")
+    @PostMapping("/signup")
     public User addUser(User user){
         return userService.addUser(user);
     }

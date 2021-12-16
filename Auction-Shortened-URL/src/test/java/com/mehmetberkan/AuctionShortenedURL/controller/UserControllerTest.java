@@ -1,6 +1,5 @@
-package com.mehmetberkan.AuctionShortenedURL.repository;
+package com.mehmetberkan.AuctionShortenedURL.controller;
 
-import com.mehmetberkan.AuctionShortenedURL.controller.UserController;
 import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,11 +9,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class UserRepositoryTest {
+class UserControllerTest {
 
     @Mock
     UserService userService;
