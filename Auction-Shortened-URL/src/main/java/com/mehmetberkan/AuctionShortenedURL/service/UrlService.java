@@ -3,7 +3,6 @@ package com.mehmetberkan.AuctionShortenedURL.service;
 import com.mehmetberkan.AuctionShortenedURL.model.Url;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UrlService {
     List<Url> getAllUrls();

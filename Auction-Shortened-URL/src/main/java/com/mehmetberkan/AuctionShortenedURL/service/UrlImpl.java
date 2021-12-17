@@ -1,18 +1,25 @@
 package com.mehmetberkan.AuctionShortenedURL.service;
 
 import com.mehmetberkan.AuctionShortenedURL.model.Url;
+import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.repository.UrlRepository;
+import com.mehmetberkan.AuctionShortenedURL.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class UrlImpl implements UrlService {
 
+    private String Url8080 = "http://localhost:8080/api/url/";
+
     private UrlRepository urlRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserImpl userImpl = new UserImpl(userRepository);
 
     @Autowired
     public UrlImpl(UrlRepository urlRepository){
@@ -42,13 +49,13 @@ public class UrlImpl implements UrlService {
 
     @Override
     public String getShortenedUrl(int userId, String originalUrl) {
-        Url url = urlRepository.findAllByUrlAndUserId(originalUrl,userId).get();
-        return url.getShortenedUrl();
+        Url shortenedUrl = urlRepository.findAllByUrlAndUserId(originalUrl,userId).get();
+        String url = Url8080 + shortenedUrl.getShortenedUrl();
+        return url;
     }
 
     @Override
     public Url createUrl(int userId, String url) {
-
         Optional<Url> controlUrl = urlRepository.findAllByUrlAndUserId(url,userId);
 
         if(controlUrl.isEmpty()){
@@ -71,8 +78,10 @@ public class UrlImpl implements UrlService {
     }
 
     private String builderUrl(int userId,String url){
+        User s = userImpl.getUserById(userId);
 
-        String urlShort = String.valueOf(userId).hashCode()+""+ url.hashCode();
+        String urlShort = url.hashCode()+s.getUsername().hashCode()+s.getPassword().hashCode()+"1";
+        System.out.println(urlShort);
         return urlShort;
     }
 }

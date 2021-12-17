@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 class UrlImplTest {
 
@@ -30,42 +31,79 @@ class UrlImplTest {
 
     @Test
     void getAllUrls() {
+        Url url = new Url("Test","Test1",1);
+        Url url1 = new Url("Test","Test1",2);
         List<Url> urlList = new ArrayList<>();
-        urlList.add(new Url("Test","Test",2));
+        urlList.add(url);
+        urlList.add(url1);
 
         when(urlRepository.findAll()).thenReturn(urlList);
 
         List<Url> result = urlImpl.getAllUrls();
-        assertEquals(1,result.size());
+        assertEquals(2, result.size());
     }
 
     @Test
     void getByUrlId() {
-        Url url = new Url();
-        url.setUrlId(1);
+        int urlId = 1;
+        Url url = new Url(urlId,"Test","Test",1);
 
-        when(urlRepository.findById(1)).thenReturn(Optional.of(url));
+        when(urlRepository.findById(any())).thenReturn(Optional.of(url));
 
         Url result = urlImpl.getByUrlId(1);
-        assertEquals(1, result.getUrlId());
+        assertEquals("Test",result.getUrl());
     }
 
     @Test
     void getAllByUserId() {
+        int userId = 1;
+        Url url = new Url(1,"Test","Test",1);
+        Url url1 = new Url(2,"Test","Test",1);
         List<Url> urlList = new ArrayList<>();
-        urlList.add(new Url("Test","Test",2));
+        urlList.add(url);
+        urlList.add(url1);
 
-        when(urlRepository.findAllByUserId(2)).thenReturn(urlList);
+        when(urlRepository.findAllByUserId(userId)).thenReturn(urlList);
 
-        List<Url> result = urlImpl.getAllByUserId(2);
-        assertEquals(1, result.size());
+        List<Url> result = urlImpl.getAllByUserId(1);
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void getOriginalUrl() {
+        String shortenedUrl = "Test";
+        String originalUrl = "OTest";
+        Url url = new Url(1,originalUrl,shortenedUrl,1);
+
+        when(urlRepository.findAllByShortenedUrl(shortenedUrl)).thenReturn(url);
+
+        String result = urlImpl.getOriginalUrl("Test");
+        assertEquals("OTest",result);
+    }
+
+    @Test
+    void getShortenedUrl() {
+        int userId = 1;
+        String originalUrl = "OTest";
+        Url url = new Url(originalUrl,"ShortenedUrl",userId);
+
+        when(urlRepository.findAllByUrlAndUserId(originalUrl,userId)).thenReturn(Optional.of(url));
+
+        String shortUrl = urlImpl.getShortenedUrl(1,"OTest");
+        String expected = "http://localhost:8080/api/url/ShortenedUrl";
+        assertEquals(expected,shortUrl);
     }
 
     @Test
     void createUrl() {
-        Url url = new Url("Test","Test2",1);
-        when(urlRepository.save(url)).thenReturn(url);
+        int userId = 1;
+        String urlOriginal = "Test";
+        Url url = new Url(1,"Test","Test",1);
+
+        when(urlRepository.findAllByUrlAndUserId(urlOriginal,userId)).thenReturn(Optional.of(url));
+        when(urlRepository.save(any())).thenReturn(url);
+
         Url result = urlImpl.createUrl(1,"Test");
-        assertEquals(1,result.getUserId());
+        assertEquals("Test",result.getShortenedUrl());
     }
 }
