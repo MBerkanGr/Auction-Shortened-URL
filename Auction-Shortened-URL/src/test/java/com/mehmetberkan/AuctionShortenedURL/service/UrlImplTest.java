@@ -21,12 +21,13 @@ class UrlImplTest {
 
     @Mock
     UrlRepository urlRepository;
+    UserImpl userImpl;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        urlImpl = new UrlImpl(urlRepository);
+        urlImpl = new UrlImpl(urlRepository,userImpl);
     }
 
     @Test

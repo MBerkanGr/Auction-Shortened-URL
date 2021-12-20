@@ -15,15 +15,13 @@ public class UrlImpl implements UrlService {
 
     private String Url8080 = "http://localhost:8080/api/url/";
 
-    private UrlRepository urlRepository;
-    private UserRepository userRepository;
+    private final UrlRepository urlRepository;
+    private final UserImpl userImpl;
 
     @Autowired
-    private UserImpl userImpl = new UserImpl(userRepository);
-
-    @Autowired
-    public UrlImpl(UrlRepository urlRepository){
+    public UrlImpl(UrlRepository urlRepository, UserImpl userImpl){
         this.urlRepository = urlRepository;
+        this.userImpl = userImpl;
     }
 
     @Override
