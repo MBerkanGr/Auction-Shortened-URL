@@ -1,5 +1,6 @@
 package com.mehmetberkan.AuctionShortenedURL.service;
 
+import com.mehmetberkan.AuctionShortenedURL.model.Url;
 import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,8 @@ class UserImplTest {
     @Test
     void getAllUsers() {
         List<User> userList = new ArrayList<>();
-        userList.add(new User(1,"Test","Test"));
+        List<Url> urlList = new ArrayList<>();
+        userList.add(new User("Test","Test",urlList));
         when(userRepository.findAll()).thenReturn(userList);
         List<User> result = userImpl.getAllUsers();
         assertEquals(1,result.size());
@@ -39,10 +41,10 @@ class UserImplTest {
 
     @Test
     void addUser() {
-        User user = new User(1,"Test","Test");
+        List<Url> urlList = new ArrayList<>();
+        User user = new User(1,"Test","Test",urlList);
         when(userRepository.save(user)).thenReturn(user);
         User user1 = userImpl.addUser(user);
         assertEquals(1,user1.getUserId());
     }
-
 }

@@ -14,9 +14,8 @@ import java.util.List;
 @RequestMapping("/api/url")
 public class UrlController {
 
-    private UrlService urlService;
+    private final UrlService urlService;
 
-    @Autowired
     public UrlController(UrlService urlService){
         this.urlService = urlService;
     }

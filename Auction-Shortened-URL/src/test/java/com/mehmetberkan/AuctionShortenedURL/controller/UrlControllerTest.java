@@ -1,6 +1,7 @@
 package com.mehmetberkan.AuctionShortenedURL.controller;
 
 import com.mehmetberkan.AuctionShortenedURL.model.Url;
+import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.service.UrlService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,10 +32,11 @@ class UrlControllerTest {
 
     @Test
     void createUrl() {
-        int userId = 1;
+        User user = new User();
+        user.setUserId(1);
         String url = "Test";
 
-        when(urlService.createUrl(userId,url)).thenReturn(new Url(1,"Test","Test",1));
+        when(urlService.createUrl(user.getUserId(),url)).thenReturn(new Url(1,"Test","Test",user));
 
         Url result = urlService.createUrl(1,"Test");
         assertEquals("Test",result.getUrl());
@@ -42,8 +44,9 @@ class UrlControllerTest {
 
     @Test
     void getAllUrls() {
-        Url url = new Url("Test","Test1",1);
-        Url url1 = new Url("Test","Test1",2);
+        User user = new User();
+        Url url = new Url("Test","Test1",user);
+        Url url1 = new Url("Test","Test1",user);
         List<Url> urlList = new ArrayList<>();
         urlList.add(url);
         urlList.add(url1);
@@ -57,8 +60,9 @@ class UrlControllerTest {
     @Test
     void getByUrlId() {
         int urlId = 1;
+        User user = new User();
 
-        when(urlService.getByUrlId(urlId)).thenReturn(new Url(1,"Test","Test",1));
+        when(urlService.getByUrlId(urlId)).thenReturn(new Url(1,"Test","Test",user));
 
         Url url = urlController.getByUrlId(1);
         assertEquals("Test",url.getUrl());
@@ -66,14 +70,15 @@ class UrlControllerTest {
 
     @Test
     void getAllByUser() {
-        int userId = 1;
-        Url url = new Url(1,"Test","Test",1);
-        Url url1 = new Url(1,"Test","Test",1);
+        User user = new User();
+        user.setUserId(1);
+        Url url = new Url(1,"Test","Test",user);
+        Url url1 = new Url(1,"Test","Test",user);
         List<Url> urlList = new ArrayList<>();
         urlList.add(url);
         urlList.add(url1);
 
-        when(urlService.getAllByUserId(userId)).thenReturn(urlList);
+        when(urlService.getAllByUserId(user.getUserId())).thenReturn(urlList);
 
         List<Url> result = urlController.getAllByUser(1);
         assertEquals(2, result.size());

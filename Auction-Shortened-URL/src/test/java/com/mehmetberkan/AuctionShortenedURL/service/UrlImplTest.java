@@ -1,6 +1,7 @@
 package com.mehmetberkan.AuctionShortenedURL.service;
 
 import com.mehmetberkan.AuctionShortenedURL.model.Url;
+import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.repository.UrlRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,9 @@ class UrlImplTest {
 
     @Test
     void getAllUrls() {
-        Url url = new Url("Test","Test1",1);
-        Url url1 = new Url("Test","Test1",2);
+        User user = new User();
+        Url url = new Url("Test","Test1",user);
+        Url url1 = new Url("Test","Test1",user);
         List<Url> urlList = new ArrayList<>();
         urlList.add(url);
         urlList.add(url1);
@@ -46,8 +48,8 @@ class UrlImplTest {
 
     @Test
     void getByUrlId() {
-        int urlId = 1;
-        Url url = new Url(urlId,"Test","Test",1);
+        User user = new User();
+        Url url = new Url(1,"Test","Test",user);
 
         when(urlRepository.findById(any())).thenReturn(Optional.of(url));
 
@@ -57,14 +59,15 @@ class UrlImplTest {
 
     @Test
     void getAllByUserId() {
-        int userId = 1;
-        Url url = new Url(1,"Test","Test",1);
-        Url url1 = new Url(2,"Test","Test",1);
+        User user = new User();
+        user.setUserId(1);
+        Url url = new Url(1,"Test","Test",user);
+        Url url1 = new Url(2,"Test","Test",user);
         List<Url> urlList = new ArrayList<>();
         urlList.add(url);
         urlList.add(url1);
 
-        when(urlRepository.findAllByUserId(userId)).thenReturn(urlList);
+        when(urlRepository.findAllByUser_UserId(user.getUserId())).thenReturn(urlList);
 
         List<Url> result = urlImpl.getAllByUserId(1);
         assertEquals(2, result.size());
@@ -72,9 +75,10 @@ class UrlImplTest {
 
     @Test
     void getOriginalUrl() {
+        User user = new User();
         String shortenedUrl = "Test";
         String originalUrl = "OTest";
-        Url url = new Url(1,originalUrl,shortenedUrl,1);
+        Url url = new Url(1,originalUrl,shortenedUrl,user);
 
         when(urlRepository.findAllByShortenedUrl(shortenedUrl)).thenReturn(url);
 
@@ -84,11 +88,12 @@ class UrlImplTest {
 
     @Test
     void getShortenedUrl() {
-        int userId = 1;
+        User user = new User();
+        user.setUserId(1);
         String originalUrl = "OTest";
-        Url url = new Url(originalUrl,"ShortenedUrl",userId);
+        Url url = new Url(originalUrl,"ShortenedUrl",user);
 
-        when(urlRepository.findAllByUrlAndUserId(originalUrl,userId)).thenReturn(Optional.of(url));
+        when(urlRepository.findAllByUrlAndUser_UserId(originalUrl,user.getUserId())).thenReturn(Optional.of(url));
 
         String shortUrl = urlImpl.getShortenedUrl(1,"OTest");
         String expected = "http://localhost:8080/api/url/ShortenedUrl";
@@ -97,11 +102,12 @@ class UrlImplTest {
 
     @Test
     void createUrl() {
-        int userId = 1;
+        User user = new User();
+        user.setUserId(1);
         String urlOriginal = "Test";
-        Url url = new Url(1,"Test","Test",1);
+        Url url = new Url(1,"Test","Test",user);
 
-        when(urlRepository.findAllByUrlAndUserId(urlOriginal,userId)).thenReturn(Optional.of(url));
+        when(urlRepository.findAllByUrlAndUser_UserId(urlOriginal,user.getUserId())).thenReturn(Optional.of(url));
         when(urlRepository.save(any())).thenReturn(url);
 
         Url result = urlImpl.createUrl(1,"Test");

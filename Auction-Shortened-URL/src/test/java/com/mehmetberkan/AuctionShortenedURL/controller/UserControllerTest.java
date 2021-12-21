@@ -1,5 +1,6 @@
 package com.mehmetberkan.AuctionShortenedURL.controller;
 
+import com.mehmetberkan.AuctionShortenedURL.model.Url;
 import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,8 +29,9 @@ class UserControllerTest {
 
     @Test
     void getAllUsers() {
-        User user = new User(1,"Test","Test");
-        User user1 = new User(2,"Test","Test");
+        List<Url> urlList = new ArrayList<>();
+        User user = new User("Test","Test",urlList);
+        User user1 = new User("Test2","Test2",urlList);
         List<User> userList = List.of(user,user1);
 
         when(userService.getAllUsers()).thenReturn(userList);
@@ -39,9 +42,11 @@ class UserControllerTest {
 
     @Test
     void addUser() {
-        User user = new User(1,"Test","Test");
+        List<Url> urlList = new ArrayList<>();
+        User user = new User("Test","Test",urlList);
         when(userService.addUser(user)).thenReturn(user);
         User user1 = userService.addUser(user);
         assertEquals("Test",user1.getPassword());
     }
+
 }
