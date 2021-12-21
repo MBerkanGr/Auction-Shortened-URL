@@ -1,6 +1,9 @@
 package com.mehmetberkan.AuctionShortenedURL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -10,12 +13,23 @@ public class User {
     private String username;
     private String password;
 
-    public User(){}
+    @OneToMany(mappedBy = "user",
+               cascade = CascadeType.ALL)
+    private List<Url> urls;
 
-    public User(int userId, String username, String password) {
+    public User() {}
+
+    public User(int userId, String username, String password, List<Url> urls) {
         this.userId = userId;
         this.username = username;
         this.password = password;
+        this.urls = urls;
+    }
+
+    public User(String username, String password, List<Url> urls) {
+        this.username = username;
+        this.password = password;
+        this.urls = urls;
     }
 
     public int getUserId() {
@@ -40,5 +54,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Url> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<Url> urls) {
+        this.urls = urls;
     }
 }

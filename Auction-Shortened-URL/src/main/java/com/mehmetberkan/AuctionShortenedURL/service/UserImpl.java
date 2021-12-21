@@ -2,7 +2,6 @@ package com.mehmetberkan.AuctionShortenedURL.service;
 
 import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +9,9 @@ import java.util.List;
 @Service
 public class UserImpl implements UserService{
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
     public UserImpl(UserRepository userRepository){
-        super();
         this.userRepository = userRepository;
     }
 

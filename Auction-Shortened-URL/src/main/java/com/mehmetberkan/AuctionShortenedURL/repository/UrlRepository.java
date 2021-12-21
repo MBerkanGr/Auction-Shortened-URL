@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UrlRepository extends JpaRepository<Url, Integer> {
-    List<Url> findAllByUserId(int userId);
+    List<Url> findAllByUser_UserId(int user_Id);
     Url findAllByShortenedUrl(String shortenedUrl);
-    Optional<Url> findAllByUrlAndUserId(String url, int userId);
+    Optional<Url> findAllByUrlAndUser_UserId(String url, int user_Id);
 }

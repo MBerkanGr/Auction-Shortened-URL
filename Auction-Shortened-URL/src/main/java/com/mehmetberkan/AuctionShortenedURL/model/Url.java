@@ -1,5 +1,7 @@
 package com.mehmetberkan.AuctionShortenedURL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,21 +11,25 @@ public class Url {
     private int urlId;
     private String url;
     private String shortenedUrl;
-    private int userId;
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY,
+               cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_Id")
+    private User user;
 
     public Url() {}
 
-    public Url(String url, String shortenedUrl, int userId) {
-        this.url = url;
-        this.shortenedUrl = shortenedUrl;
-        this.userId = userId;
-    }
-
-    public Url(int urlId, String url, String shortenedUrl, int userId) {
+    public Url(int urlId, String url, String shortenedUrl, User user) {
         this.urlId = urlId;
         this.url = url;
         this.shortenedUrl = shortenedUrl;
-        this.userId = userId;
+        this.user = user;
+    }
+
+    public Url(String url, String shortenedUrl, User user) {
+        this.url = url;
+        this.shortenedUrl = shortenedUrl;
+        this.user = user;
     }
 
     public int getUrlId() {
@@ -50,11 +56,11 @@ public class Url {
         this.shortenedUrl = shortenedUrl;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

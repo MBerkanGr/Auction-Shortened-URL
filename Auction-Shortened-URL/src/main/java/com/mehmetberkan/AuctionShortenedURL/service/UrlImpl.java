@@ -3,8 +3,6 @@ package com.mehmetberkan.AuctionShortenedURL.service;
 import com.mehmetberkan.AuctionShortenedURL.model.Url;
 import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.repository.UrlRepository;
-import com.mehmetberkan.AuctionShortenedURL.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +16,6 @@ public class UrlImpl implements UrlService {
     private final UrlRepository urlRepository;
     private final UserImpl userImpl;
 
-    @Autowired
     public UrlImpl(UrlRepository urlRepository, UserImpl userImpl){
         this.urlRepository = urlRepository;
         this.userImpl = userImpl;
@@ -36,7 +33,7 @@ public class UrlImpl implements UrlService {
 
     @Override
     public List<Url> getAllByUserId(int userId) {
-        return urlRepository.findAllByUserId(userId);
+       return urlRepository.findAllByUser_UserId(userId);
     }
 
     @Override
@@ -47,20 +44,22 @@ public class UrlImpl implements UrlService {
 
     @Override
     public String getShortenedUrl(int userId, String originalUrl) {
-        Url shortenedUrl = urlRepository.findAllByUrlAndUserId(originalUrl,userId).get();
+        Url shortenedUrl = urlRepository.findAllByUrlAndUser_UserId(originalUrl,userId).get();
         String url = Url8080 + shortenedUrl.getShortenedUrl();
         return url;
     }
 
     @Override
     public Url createUrl(int userId, String url) {
-        Optional<Url> controlUrl = urlRepository.findAllByUrlAndUserId(url,userId);
+
+        Optional<Url> controlUrl = urlRepository.findAllByUrlAndUser_UserId(url,userId);
 
         if(controlUrl.isEmpty()){
+            User user = userImpl.getUserById(userId);
             String createdUrl = builderUrl(userId,url);
-            Url creatUrl = new Url(url,createdUrl,userId);
-            urlRepository.save(creatUrl);
-            return creatUrl;
+            Url createUrl = new Url(url,createdUrl,user);
+            urlRepository.save(createUrl);
+            return createUrl;
         }
         return controlUrl.get();
     }
@@ -77,9 +76,7 @@ public class UrlImpl implements UrlService {
 
     private String builderUrl(int userId,String url){
         User s = userImpl.getUserById(userId);
-
         String urlShort = url.hashCode()+s.getUsername().hashCode()+s.getPassword().hashCode()+"1";
-        System.out.println(urlShort);
         return urlShort;
     }
 }
