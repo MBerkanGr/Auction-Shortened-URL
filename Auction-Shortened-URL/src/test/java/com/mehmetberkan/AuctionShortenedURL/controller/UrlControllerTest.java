@@ -53,8 +53,8 @@ class UrlControllerTest {
 
         when(urlService.getAllUrls()).thenReturn(urlList);
 
-        List<Url> result = urlController.getAllUrls();
-        assertEquals(2, result.size());
+        ResponseEntity<List<Url>> result = urlController.getAllUrls();
+        assertEquals(200, result.getStatusCodeValue());
     }
 
     @Test
@@ -64,35 +64,8 @@ class UrlControllerTest {
 
         when(urlService.getByUrlId(urlId)).thenReturn(new Url(1,"Test","Test",user));
 
-        Url url = urlController.getByUrlId(1);
-        assertEquals("Test",url.getUrl());
-    }
-
-    @Test
-    void getAllByUser() {
-        User user = new User();
-        user.setUserId(1);
-        Url url = new Url(1,"Test","Test",user);
-        Url url1 = new Url(1,"Test","Test",user);
-        List<Url> urlList = new ArrayList<>();
-        urlList.add(url);
-        urlList.add(url1);
-
-        when(urlService.getAllByUserId(user.getUserId())).thenReturn(urlList);
-
-        List<Url> result = urlController.getAllByUser(1);
-        assertEquals(2, result.size());
-    }
-
-    @Test
-    void getShortedenUrl() {
-        String url = "Test";
-        int userId = 1;
-
-        when(urlService.getShortenedUrl(userId,url)).thenReturn("TestShortened");
-
-        String result = urlController.getShortedenUrl(1,"Test");
-        assertEquals("TestShortened",result);
+        ResponseEntity<Url> url = urlController.getByUrlId(1);
+        assertEquals(200,url.getStatusCodeValue());
     }
 
     @Test
@@ -113,7 +86,7 @@ class UrlControllerTest {
 
         when(urlService.deleteUrl(urlId)).thenReturn("Successfully");
 
-        String result = urlController.deleteUrl(1);
-        assertEquals("Successfully", result);
+        ResponseEntity<String> result = urlController.deleteUrl(1);
+        assertEquals(200, result.getStatusCodeValue());
     }
 }

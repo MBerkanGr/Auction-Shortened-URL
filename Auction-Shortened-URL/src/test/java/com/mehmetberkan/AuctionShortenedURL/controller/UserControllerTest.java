@@ -2,6 +2,7 @@ package com.mehmetberkan.AuctionShortenedURL.controller;
 
 import com.mehmetberkan.AuctionShortenedURL.model.Url;
 import com.mehmetberkan.AuctionShortenedURL.model.User;
+import com.mehmetberkan.AuctionShortenedURL.service.UrlService;
 import com.mehmetberkan.AuctionShortenedURL.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,13 +19,14 @@ class UserControllerTest {
 
     @Mock
     UserService userService;
+    UrlService urlService;
 
     UserController userController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        userController = new UserController(userService);
+        userController = new UserController(userService, urlService);
     }
 
     @Test

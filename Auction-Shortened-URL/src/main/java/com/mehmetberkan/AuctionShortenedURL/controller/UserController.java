@@ -1,32 +1,48 @@
 package com.mehmetberkan.AuctionShortenedURL.controller;
 
+import com.mehmetberkan.AuctionShortenedURL.model.Url;
 import com.mehmetberkan.AuctionShortenedURL.model.User;
+import com.mehmetberkan.AuctionShortenedURL.service.UrlService;
 import com.mehmetberkan.AuctionShortenedURL.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+    private final UrlService urlService;
 
-    public UserController(UserService userService){
+    public UserController(UserService userService, UrlService urlService){
         this.userService = userService;
+        this.urlService = urlService;
     }
 
-    @GetMapping("/getAll")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(){
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("/signup")
-    public User addUser(User user){
-        return userService.addUser(user);
+    @PostMapping
+    public ResponseEntity<User> addUser(User user){
+        return ResponseEntity.ok(userService.addUser(user));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserId(@PathVariable int userId) {
+        return ResponseEntity.ok(userService.getUserById(userId));
+    }
+
+    @GetMapping("/{userId}/{originalUrl}")
+    public ResponseEntity<String> getShortedenUrl(@PathVariable int userId, @PathVariable String originalUrl) {
+        return ResponseEntity.ok(urlService.getShortenedUrl(userId,originalUrl));
+    }
+
+    @GetMapping("/{userId}/urls")
+    public ResponseEntity<List<Url>> getAllUrls(@PathVariable int userId) {
+        return ResponseEntity.ok(urlService.getAllByUserId(userId));
     }
 }
