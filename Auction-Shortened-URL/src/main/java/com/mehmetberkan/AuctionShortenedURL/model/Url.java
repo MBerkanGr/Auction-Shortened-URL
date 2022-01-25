@@ -3,13 +3,16 @@ package com.mehmetberkan.AuctionShortenedURL.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Url {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int urlId;
+    @NotBlank(message = "Url cannot be empty")
     private String url;
+    @NotBlank(message = "ShortenedUrl cannot be empty")
     private String shortenedUrl;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY,

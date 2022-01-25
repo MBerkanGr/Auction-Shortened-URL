@@ -3,6 +3,8 @@ package com.mehmetberkan.AuctionShortenedURL.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -10,7 +12,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+    @NotBlank(message = "Username cannot be empty")
+    @Size(min = 3, max = 15, message = "Username length must be between 3-15")
     private String username;
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 5, max = 15, message = "Password length must be between 5-15")
     private String password;
 
     @OneToMany(mappedBy = "user",

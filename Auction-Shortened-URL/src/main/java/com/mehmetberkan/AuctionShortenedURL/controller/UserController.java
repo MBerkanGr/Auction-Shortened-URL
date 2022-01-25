@@ -7,6 +7,7 @@ import com.mehmetberkan.AuctionShortenedURL.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(User user){
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user){
         return ResponseEntity.ok(userService.addUser(user));
     }
 
