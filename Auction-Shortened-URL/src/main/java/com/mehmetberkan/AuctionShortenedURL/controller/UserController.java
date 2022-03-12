@@ -1,5 +1,6 @@
 package com.mehmetberkan.AuctionShortenedURL.controller;
 
+import com.mehmetberkan.AuctionShortenedURL.dto.UserDto;
 import com.mehmetberkan.AuctionShortenedURL.model.Url;
 import com.mehmetberkan.AuctionShortenedURL.model.User;
 import com.mehmetberkan.AuctionShortenedURL.service.UrlService;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<UserDto>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
 

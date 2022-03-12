@@ -29,18 +29,18 @@ class UserControllerTest {
         userController = new UserController(userService, urlService);
     }
 
-    @Test
-    void getAllUsers() {
-        List<Url> urlList = new ArrayList<>();
-        User user = new User("Test","Test",urlList);
-        User user1 = new User("Test2","Test2",urlList);
-        List<User> userList = List.of(user,user1);
-
-        when(userService.getAllUsers()).thenReturn(userList);
-
-        List<User> users = userService.getAllUsers();
-        assertEquals(2,users.size());
-    }
+//    @Test
+//    void getAllUsers() {
+//        List<Url> urlList = new ArrayList<>();
+//        User user = new User("Test","Test",urlList);
+//        User user1 = new User("Test2","Test2",urlList);
+//        List<User> userList = List.of(user,user1);
+//
+//        when(userService.getAllUsers()).thenReturn(userList);
+//
+//        List<User> users = userService.getAllUsers();
+//        assertEquals(2,users.size());
+//    }
 
     @Test
     void addUser() {
