@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class User {
 
     @OneToMany(mappedBy = "user",
                cascade = CascadeType.ALL)
-    private List<Url> urls;
+    private List<Url> urls = new ArrayList<>();
 
     public User() {}
 
@@ -68,5 +69,9 @@ public class User {
 
     public void setUrls(List<Url> urls) {
         this.urls = urls;
+    }
+
+    public void addUrl(Url url){
+        this.urls.add(url);
     }
 }

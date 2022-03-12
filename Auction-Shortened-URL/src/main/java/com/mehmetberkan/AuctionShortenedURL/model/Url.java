@@ -14,9 +14,9 @@ public class Url {
     private String url;
     @NotBlank(message = "ShortenedUrl cannot be empty")
     private String shortenedUrl;
+
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY,
-               cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_Id")
     private User user;
 
